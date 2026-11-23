@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Jelen Tenka</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d1915'/%3E%3Cpath d='M16 4C9 4 6 11 6 28h20C26 11 23 4 16 4z' fill='%23c8322b'/%3E%3Cpath d='M16 6c-4.5 0-7 6-7 22h4c0-12 1-16 3-16s3 4 3 16h4c0-16-2.5-22-7-22z' fill='%23f2c230'/%3E%3Cellipse cx='16' cy='15' rx='3.2' ry='4.4' fill='%23a7a297'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <style>
+      body:not(.ready) #panel, body:not(.ready) #toast, body:not(.ready) #fade, body:not(.ready) #btn-exit, body:not(.ready) #btn-view, body:not(.ready) #walk-help, body:not(.ready) #card, body:not(.ready) .mark { visibility: hidden; transition: none; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div id="loader"></div>
+    <div id="marks" aria-hidden="true"></div>
+    <div class="grain"></div>
+    <div id="fade"></div>
+
+    <div class="title">
+      <span class="kicker">Santo Domingo de los Tsáchilas · Ecuador</span>
+      <h1>Jelen Tenka</h1>
+      <p class="sub">Busca los detalles <span id="count">0 / 14</span></p>
+      <p class="hint">Arrastra para rodear el monumento y usa la rueda para acercarte. Toca la lupa para ver los detalles, o pasea a pie y sube al mirador.</p>
+    </div>
+
+    <div class="buttons">
+      <button id="btn-seek" aria-label="Mostrar detalles" title="Busca los detalles">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>
+      </button>
+      <button id="btn-sound" aria-label="Sonido" title="Sonido">
+        <svg class="snd-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>
+        <svg class="snd-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+      </button>
+      <button id="btn-walk" aria-label="Pasear a pie" title="Pasear a pie">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M10 22l2-6 3 3v3"/><path d="M8 12l3-4 3 2 2 3h3"/><path d="M11 8l1 8"/></svg>
+      </button>
+      <button id="btn-panel" aria-label="Hora y clima" title="Hora y clima">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button id="btn-eye" aria-label="Ocultar interfaz" title="Ocultar interfaz">
+        <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a10 10 0 0 0 5.4-1.6"/></svg>
+      </button>
+      <button id="btn-reset" aria-label="Vista de conjunto" title="Vista de conjunto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+      </button>
+    </div>
+
+    <aside id="panel" aria-hidden="true">
+      <section>
+        <div class="row between">
+          <h2>Hora</h2>
+          <span id="clock" class="clock">16:30</span>
+        </div>
+        <div class="seg" id="time-mode">
+          <button data-mode="real">Real</button>
+          <button data-mode="manual">Manual</button>
+          <button data-mode="cycle">Ciclo</button>
+        </div>
+        <input type="range" id="hour" min="0" max="24" step="0.05" value="16.5" aria-label="Hora del día" />
+        <div class="ticks"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>
+      </section>
+      <section>
+        <h2>Clima</h2>
+        <div class="chips" id="weather">
+          <button data-w="clear">Despejado</button>
+          <button data-w="partly">Parcial</button>
+          <button data-w="cloudy">Nublado</button>
+          <button data-w="rain">Lluvia</button>
+          <button data-w="storm">Tormenta</button>
+          <button data-w="fog">Niebla</button>
+        </div>
+      </section>
+      <section>
+        <h2>Sonido</h2>
+        <div class="row"><span class="lbl">Volumen</span><input type="range" id="volume" min="0" max="1" step="0.01" value="0.8" aria-label="Volumen" /></div>
+        <div class="row toggles">
+          <label class="tog"><input type="checkbox" id="amb" checked /><span>Ambiente</span></label>
+          <label class="tog"><input type="checkbox" id="mus" checked /><span>Marimba</span></label>
+        </div>
+        <p class="credit">Aves, chicharras, ranas, lluvia, viento y pasos sintetizados en vivo. Marimba creada en código con <a href="https://github.com/Leonxlnx/earshot" target="_blank" rel="noopener">earshot</a>. Monumento, parque y ciudad generados en código: sin modelos ni fotos.</p>
+      </section>
+    </aside>
+
+    <article id="card" aria-live="polite" aria-hidden="true">
+      <p class="kicker" id="card-kicker">Detalle 01</p>
+      <h2 id="card-title"></h2>
+      <p id="card-text"></p>
+      <nav>
+        <button id="card-prev" aria-label="Detalle anterior">←</button>
+        <button id="card-next" aria-label="Detalle siguiente">→</button>
+        <button id="card-close" class="wide">Volver al parque</button>
+      </nav>
+    </article>
+    <div id="toast" role="status"></div>
+    <p id="walk-help"></p>
+    <button id="btn-exit" class="action">Vista de conjunto</button>
+    <button id="btn-view" class="action">Primera persona</button>
+    <div id="cursor"></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
