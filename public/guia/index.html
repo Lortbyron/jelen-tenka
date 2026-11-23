@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Cómo se hizo Jelen Tenka</title>
+  <meta name="description" content="Las imágenes de referencia del monumento Jelen Tenka y tres prompts para que tu IA te explique cómo funciona la escena 3D y cómo hacer la tuya." />
+  <meta property="og:title" content="Cómo se hizo Jelen Tenka" />
+  <meta property="og:description" content="De las imágenes de referencia a una escena 3D hecha con código. Pregúntale a tu IA cómo funciona." />
+  <meta property="og:image" content="https://jelentenka.com/guia/img/escena-frente.jpg" />
+  <meta name="theme-color" content="#f3ecdf" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231d1915'/%3E%3Cpath d='M16 4C9 4 6 11 6 28h20C26 11 23 4 16 4z' fill='%23c8322b'/%3E%3Cpath d='M16 6c-4.5 0-7 6-7 22h4c0-12 1-16 3-16s3 4 3 16h4c0-16-2.5-22-7-22z' fill='%23f2c230'/%3E%3Cellipse cx='16' cy='15' rx='3.2' ry='4.4' fill='%23a7a297'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --paper: #f3ecdf;
+      --card: #fbf7ef;
+      --ink: #1d1915;
+      --soft: #5d544a;
+      --line: #ddd2c0;
+      --red: #b52d26;
+      --gold: #e2ac1f;
+      --green: #2f6b3a;
+      --violet: #5b3d8f;
+      --code: #241f1a;
+      --code-ink: #f3ecdf;
+      --shadow: 0 1px 2px rgba(29,25,21,.06), 0 8px 28px rgba(29,25,21,.08);
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #17130f;
+        --card: #211c17;
+        --ink: #f1e9dc;
+        --soft: #b4a998;
+        --line: #3a322a;
+        --red: #e0574d;
+        --gold: #f2c230;
+        --green: #7fbf7b;
+        --violet: #b59be6;
+        --code: #0f0c09;
+        --code-ink: #efe6d8;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.35);
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 400 17px/1.6 "DM Sans", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    figure { margin: 0; }
+    a { color: inherit; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .narrow { max-width: 720px; }
+    .mono { font-family: "DM Mono", ui-monospace, monospace; }
+    .kicker { font: 400 12px/1.4 "DM Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); margin: 0 0 14px; }
+    h1, h2, h3 { font-family: "Fraunces", Georgia, serif; font-weight: 600; letter-spacing: -.01em; line-height: 1.1; margin: 0; }
+    h1 { font-size: clamp(40px, 7vw, 76px); }
+    h2 { font-size: clamp(30px, 4.4vw, 46px); margin-bottom: 16px; }
+    h3 { font-size: 22px; margin-bottom: 6px; }
+    p { margin: 0 0 14px; }
+    .lead { font-size: clamp(18px, 2.1vw, 21px); color: var(--soft); max-width: 640px; }
+
+    /* barra superior */
+    .top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 58px; }
+    .brand { font: 600 19px "Fraunces", serif; text-decoration: none; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 14px 0 0 var(--gold), 28px 0 0 var(--green); margin-right: 28px; }
+    .top nav { display: flex; gap: 22px; font-size: 15px; }
+    .top nav a { text-decoration: none; color: var(--soft); }
+    .top nav a:hover { color: var(--ink); }
+
+    /* portada */
+    .hero { padding: 72px 0 56px; }
+    .hero h1 { margin-bottom: 20px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 999px; font: 500 15px "DM Sans", sans-serif; text-decoration: none; border: 1px solid var(--line); background: var(--card); color: var(--ink); cursor: pointer; transition: transform .15s ease, border-color .15s ease; }
+    .btn:hover { transform: translateY(-1px); border-color: var(--soft); }
+    .btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .btn svg { width: 16px; height: 16px; flex: none; }
+    .hero-shot { margin-top: 48px; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 16 / 9; background: var(--line); }
+    .hero-shot img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* método */
+    .method { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+    .step { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; }
+    .step .n { font: 500 13px "DM Mono", monospace; color: var(--red); margin-bottom: 8px; display: block; }
+    .step p { color: var(--soft); font-size: 15.5px; margin: 0; }
+
+    section { padding: 72px 0; }
+    section + section { border-top: 1px solid var(--line); }
+
+    /* referencias */
+    .note { background: var(--card); border-left: 3px solid var(--gold); border-radius: 0 12px 12px 0; padding: 16px 20px; color: var(--soft); font-size: 16px; margin: 22px 0 0; }
+    .pairs { display: grid; gap: 40px; margin-top: 44px; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .pair figcaption { grid-column: 1 / -1; color: var(--soft); font-size: 15.5px; max-width: 760px; }
+    .pair figcaption b { color: var(--ink); font-weight: 600; }
+    .shot { position: relative; border-radius: 12px; overflow: hidden; background: var(--line); aspect-ratio: 16 / 10; cursor: zoom-in; border: 0; padding: 0; width: 100%; }
+    .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+    .shot:hover img { transform: scale(1.025); }
+    .shot.tall { aspect-ratio: 16 / 10; }
+    .shot.tall img { object-fit: contain; background: #fff; }
+    .tag { position: absolute; left: 10px; top: 10px; font: 400 11px/1 "DM Mono", monospace; letter-spacing: .1em; text-transform: uppercase; padding: 6px 9px; border-radius: 999px; background: rgba(20,16,12,.72); color: #f3ecdf; }
+    .tag.scene { background: var(--red); color: #fff; }
+    .more { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+    .more .shot { aspect-ratio: 4 / 3; }
+    h3.sub { margin-top: 56px; }
+
+    /* prompts */
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 30px 0 0; }
+    .tab { padding: 10px 18px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--soft); font: 500 15px "DM Sans", sans-serif; cursor: pointer; }
+    .tab[aria-selected="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .panel { margin-top: 18px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+    .panel[hidden] { display: none; }
+    .panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 22px 24px 18px; }
+    .panel-head p { margin: 0; color: var(--soft); font-size: 15.5px; max-width: 620px; }
+    .prompt { margin: 0; padding: 22px 24px 26px; background: var(--code); color: var(--code-ink); font: 400 14.5px/1.65 "DM Mono", ui-monospace, monospace; white-space: pre-wrap; word-wrap: break-word; }
+    .copy { flex: none; }
+    .copy.done { background: var(--green); color: #fff; border-color: var(--green); }
+    .hint { color: var(--soft); font-size: 15px; margin-top: 16px; }
+
+    /* AI Studio */
+    .studio { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: start; }
+    .steps { list-style: none; padding: 0; margin: 20px 0 0; counter-reset: s; }
+    .steps li { counter-increment: s; position: relative; padding: 0 0 18px 44px; }
+    .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--card); border: 1px solid var(--line); display: grid; place-items: center; font: 500 13px "DM Mono", monospace; color: var(--red); }
+    .ideas { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+    .ideas ul { margin: 12px 0 0; padding: 0; list-style: none; }
+    .ideas li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15.5px; color: var(--soft); }
+    .ideas li:first-child { border-top: 0; }
+    .ideas q { color: var(--ink); quotes: "«" "»"; }
+
+    footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--soft); font-size: 14.5px; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+    footer p { margin: 0; max-width: 620px; }
+
+    /* visor */
+    dialog { border: 0; padding: 0; background: transparent; max-width: min(1400px, 94vw); max-height: 92vh; }
+    dialog::backdrop { background: rgba(12,10,8,.88); }
+    dialog img { max-width: 100%; max-height: 84vh; border-radius: 10px; margin: 0 auto; }
+    dialog p { color: #e9e0d2; text-align: center; margin: 12px 0 0; font-size: 15px; }
+    dialog button { position: fixed; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 22px; cursor: pointer; }
+
+    @media (max-width: 860px) {
+      .top nav { display: none; }
+      .method { grid-template-columns: 1fr; }
+      .studio { grid-template-columns: 1fr; }
+      .more { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .wrap { padding: 0 16px; }
+      .hero { padding: 44px 0 36px; }
+      section { padding: 52px 0; }
+      .pair { grid-template-columns: 1fr; gap: 10px; }
+      .panel-head { flex-direction: column; padding: 18px; }
+      .prompt { padding: 18px; font-size: 13.5px; }
+      .btn { padding: 11px 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn, .shot img { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="../"><span class="dot" aria-hidden="true"></span>Jelen Tenka</a>
+      <nav aria-label="Secciones">
+        <a href="#referencias">Referencias</a>
+        <a href="#prompts">Pregúntale a tu IA</a>
+        <a href="#remix">Remíxalo</a>
+        <a href="https://github.com/Lortbyron/jelen-tenka">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero wrap">
+      <p class="kicker">Santo Domingo de los Tsáchilas · Ecuador</p>
+      <h1>Cómo se hizo<br />Jelen Tenka</h1>
+      <p class="lead">El monumento del Parque Ecológico Jelen Tenka, convertido en una escena 3D que se recorre en el navegador. No tiene modelos 3D ni fotos dentro: todo está hecho con código. Aquí ves de qué imágenes partimos y cómo pedirle a tu IA que te explique el resto.</p>
+      <div class="actions">
+        <a class="btn primary" href="../">Abrir la escena 3D
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+        <a class="btn" href="https://github.com/Lortbyron/jelen-tenka">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.23.48-2.7-1.07-2.7-1.07-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.88.87 2.34.66.07-.52.28-.87.5-1.07-1.78-.2-3.65-.89-3.65-3.95 0-.87.31-1.59.83-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.52.56.83 1.28.83 2.15 0 3.07-1.87 3.75-3.66 3.95.29.25.54.73.54 1.48v2.2c0 .21.15.46.55.38A8 8 0 0 0 8 0Z"/></svg>
+          Ver el código</a>
+        <a class="btn" href="https://ai.studio/apps/14c7cd4f-2e08-41b1-9aff-b3a428ec9a19">Remixar en Google AI Studio</a>
+      </div>
+      <div class="hero-shot"><img src="img/escena-frente.jpg" alt="La escena 3D: el rostro de mosaico mirando al cielo, el pecho morado con el collar rojo y las dos manos gigantes en el parque" width="1280" height="720" /></div>
+
+      <div class="method">
+        <div class="step"><span class="n">01 · Mirar</span><h3>Imágenes de referencia</h3><p>Reunimos imágenes del monumento, del parque y del personaje. Son la meta: lo que la escena tiene que parecer.</p></div>
+        <div class="step"><span class="n">02 · Pedir</span><h3>Una IA que programa</h3><p>No se escribió el código a mano: se le pidió a una IA, en español y por partes, que construyera cada pieza.</p></div>
+        <div class="step"><span class="n">03 · Comparar</span><h3>Una cosa a la vez</h3><p>Después de cada cambio se toma una captura, se compara con la referencia y se ajusta: proporciones, colores, lo que falta.</p></div>
+      </div>
+    </div>
+
+    <section id="referencias">
+      <div class="wrap">
+        <p class="kicker">Las imágenes de referencia</p>
+        <h2>De estas imágenes partimos</h2>
+        <div class="narrow">
+          <p class="lead">Buscamos fotos del monumento, pero las que encontramos eran de baja calidad: pequeñas, borrosas o tomadas desde lejos. Por eso recreamos las referencias con IA a partir de esas fotos reales, para poder ver bien el mosaico, el rostro y las manos.</p>
+          <p class="note">Estas imágenes no están dentro de la escena. Solo sirvieron para mirar, medir y comparar. Todo lo que ves en 3D (la piedra, el mosaico, las plantas, la luz) está dibujado con código.</p>
+        </div>
+
+        <div class="pairs">
+          <figure class="pair">
+            <button class="shot" data-cap="Referencia: la vista general del monumento"><img src="img/ref-vista.jpg" alt="Referencia: el rostro de mosaico entre las dos manos gigantes, con el óvalo de setos delante" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: la cámara de inicio"><img src="img/escena-frente.jpg" alt="La escena 3D desde el mismo punto de vista" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>La vista general.</b> De aquí salieron la cámara de inicio, el óvalo de setos y la posición de las dos manos, que salen del césped como si la tierra las levantara.</figcaption>
+          </figure>
+          <figure class="pair">
+            <button class="shot" data-cap="Referencia: el rostro de piedra"><img src="img/ref-rostro.jpg" alt="Referencia: rostro de piedra con los ojos cerrados mirando al cielo, rodeado del manto de mosaico" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: el rostro"><img src="img/escena-rostro.jpg" alt="El rostro en la escena 3D" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>El rostro.</b> Mira al cielo con los ojos cerrados. En el código es una esfera que se deforma con fórmulas, como plastilina: aquí sale la nariz, aquí se hunden los ojos, aquí van los labios.</figcaption>
+          </figure>
+          <figure class="pair">
+            <button class="shot" data-cap="Referencia: el pecho y el collar"><img src="img/ref-pecho.jpg" alt="Referencia: pecho morado con espirales celestes y un collar de cuentas rojas" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: el pecho y el collar"><img src="img/escena-pecho.jpg" alt="El pecho y el collar en la escena 3D" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>El pecho y el collar.</b> Morado con espirales celestes y cinco vueltas de cuentas rojas. El mosaico se dibuja tesela por tesela en un lienzo dentro del navegador, cada vez que se abre la página.</figcaption>
+          </figure>
+          <figure class="pair">
+            <button class="shot" data-cap="Referencia: el mirador de la mano"><img src="img/ref-mirador.jpg" alt="Referencia: la mano gigante de mosaico con una escalera de metal que sube hasta la muñeca" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: el mirador"><img src="img/escena-mirador.jpg" alt="La mano y la escalera del mirador en la escena 3D" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>La mano y el mirador.</b> Una escalera de metal sube hasta la altura de la muñeca. En la escena se puede subir caminando, y desde arriba el viento suena más fuerte.</figcaption>
+          </figure>
+          <figure class="pair">
+            <button class="shot tall" data-cap="Referencia: las letras JELEN TENKA"><img src="img/ref-letras.jpg" alt="Referencia: letras JELEN TENKA cubiertas de plantas" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: las letras de la entrada"><img src="img/escena-letras.jpg" alt="Las letras JELEN TENKA de jardín vertical en la escena 3D, junto a la ciclovía" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>Las letras.</b> El nombre del parque como un jardín vertical: bloques de piedra con follaje y flores en la cara, junto a la ciclovía azul de la entrada.</figcaption>
+          </figure>
+          <figure class="pair">
+            <button class="shot tall" data-cap="Referencia: el caminante tsáchila"><img src="img/ref-caminante-1.jpg" alt="Referencia: figura de arcilla de un hombre tsáchila con cabello de achiote, estola de franjas y falda de rayas" loading="lazy" /><span class="tag">Referencia</span></button>
+            <button class="shot" data-cap="En la escena: el caminante"><img src="img/escena-caminante.jpg" alt="El caminante en la escena 3D, de pie en el parque" loading="lazy" /><span class="tag scene">En la escena</span></button>
+            <figcaption><b>El caminante.</b> Un hombre tsáchila tallado en arcilla, sacado de tres láminas: el cabello de achiote, la estola de franjas, los collares y la falda de rayas. Es con quien se pasea por el parque.</figcaption>
+          </figure>
+        </div>
+
+        <h3 class="sub">Más referencias</h3>
+        <div class="more">
+          <button class="shot" data-cap="El manto: franjas de mosaico con plantas vivas"><img src="img/ref-manto.jpg" alt="Referencia: franjas de mosaico azul y verde con plantas vivas" loading="lazy" /></button>
+          <button class="shot" data-cap="El monumento en el parque, con la ciclovía"><img src="img/ref-parque.jpg" alt="Referencia: el monumento visto desde la ciclovía, con palmeras y jardines" loading="lazy" /></button>
+          <button class="shot tall" data-cap="El caminante, lámina 2"><img src="img/ref-caminante-2.jpg" alt="Referencia: el caminante tsáchila de frente, lámina 2" loading="lazy" /></button>
+          <button class="shot tall" data-cap="El caminante, lámina 3"><img src="img/ref-caminante-3.jpg" alt="Referencia: el caminante tsáchila, retrato con achiote y rayas, lámina 3" loading="lazy" /></button>
+        </div>
+      </div>
+    </section>
+
+    <section id="prompts">
+      <div class="wrap">
+        <p class="kicker">Pregúntale a tu IA</p>
+        <h2>Que tu IA te lo explique</h2>
+        <p class="lead">Copia el prompt que te quede mejor y pégalo en el asistente de IA que uses. Ya incluye los enlaces al proyecto, así que puede partir del código real.</p>
+
+        <div class="tabs" role="tablist" aria-label="Elige un prompt">
+          <button class="tab" role="tab" id="t-basico" aria-controls="p-basico" aria-selected="true">Sin saber código</button>
+          <button class="tab" role="tab" id="t-tecnico" aria-controls="p-tecnico" aria-selected="false" tabindex="-1">Para programadores</button>
+          <button class="tab" role="tab" id="t-chicos" aria-controls="p-chicos" aria-selected="false" tabindex="-1">De 12 a 15 años</button>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-basico" aria-labelledby="t-basico">
+          <div class="panel-head">
+            <p>Para quien nunca ha programado. Explica qué es, cómo se hizo y qué necesitas para hacer algo parecido con un lugar de tu ciudad, sin tecnicismos.</p>
+            <button class="btn copy" data-target="x-basico">Copiar prompt</button>
+          </div>
+<pre class="prompt" id="x-basico">Hola. Quiero entender un proyecto, pero no sé nada de programación. Háblame con palabras sencillas y ejemplos de la vida diaria. Si usas una palabra técnica, explícala en una línea.
+
+El proyecto se llama Jelen Tenka: es el monumento del Parque Ecológico Jelen Tenka (Santo Domingo de los Tsáchilas, Ecuador) convertido en una escena 3D que se recorre en el navegador.
+- Para verlo: https://jelentenka.com
+- El código: https://github.com/Lortbyron/jelen-tenka
+- Una versión para remixar gratis en Google AI Studio: https://ai.studio/apps/14c7cd4f-2e08-41b1-9aff-b3a428ec9a19
+
+Explícame, en este orden:
+1. Qué es esto y cómo una página web puede mostrar un monumento en 3D sin usar fotos ni modelos 3D.
+2. Cómo se hizo: se partió de imágenes de referencia y se le fue pidiendo a una IA que escribiera el código, mirando el resultado y corrigiendo una cosa a la vez.
+3. Qué necesitaría yo para hacer algo parecido con un lugar de mi ciudad, paso a paso, sin escribir código y empezando con herramientas gratuitas.
+4. Las 10 palabras que más me conviene entender (por ejemplo: navegador, código, 3D, prompt, repositorio), cada una en una frase.
+
+Si no puedes abrir los enlaces, dímelo y trabaja con lo que te conté. Al final, pregúntame qué lugar quiero recrear y ayúdame a escribir mi primer pedido a la IA.</pre>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-tecnico" aria-labelledby="t-tecnico" hidden>
+          <div class="panel-head">
+            <p>Para quien ya programa. Un recorrido por la arquitectura, las técnicas de Three.js y un plan para replicar el método con otro lugar.</p>
+            <button class="btn copy" data-target="x-tecnico">Copiar prompt</button>
+          </div>
+<pre class="prompt" id="x-tecnico">Actúa como un desarrollador senior de gráficos web y hazme un recorrido por este repositorio.
+
+Repo: https://github.com/Lortbyron/jelen-tenka
+Demo: https://jelentenka.com
+
+Es una escena 3D del monumento Jelen Tenka (Ecuador) hecha con Three.js 0.187 y Vite 7, en JavaScript puro y sin frameworks. Todo es procedural: no hay modelos .glb ni imágenes. La geometría se construye en código y las texturas se dibujan en &lt;canvas&gt; al cargar.
+
+Quiero que:
+1. Expliques la arquitectura: qué hace cada módulo de src/ (main, monument, park, life, guide, atmosphere, sky, clouds, effects, flora, textures, audio, walker, details) y cómo se conectan en el bucle de render.
+2. Me muestres las técnicas clave con referencias a archivos y funciones concretas: el rostro como esfera deformada con campanas gaussianas, el manto como superficie paramétrica, las texturas en canvas, los shaders con onBeforeCompile (césped, piedra triplanar, viento en las hojas), la fusión de geometrías por material e InstancedMesh, el director de atmósfera (hora, clima, niebla, mapa de entorno), el audio sintetizado con Web Audio y el paseo con colisiones.
+3. Analices el rendimiento: draw calls, sombras y qué cuidar en celulares.
+4. Me des un plan para replicar el método con otro lugar: de las referencias a una fase 1 (la pieza central, la luz y el clima), una fase 2 (sonido y paseo) y una fase 3 (gente e historias), y cómo verificar cada fase con capturas automáticas (por ejemplo, con Puppeteer).
+5. Me digas qué estudiar y en qué orden para dominar esto (matemática 3D, shaders, Web Audio).
+
+Cita el código real del repo. Si no puedes leerlo, dímelo y te pego los archivos; no inventes funciones.</pre>
+        </div>
+
+        <div class="panel" role="tabpanel" id="p-chicos" aria-labelledby="t-chicos" hidden>
+          <div class="panel-head">
+            <p>Para chicos y adolescentes. Con comparaciones de videojuegos y plastilina, preguntas para comprobar que entendiste y un reto de fin de semana.</p>
+            <button class="btn copy" data-target="x-chicos">Copiar prompt</button>
+          </div>
+<pre class="prompt" id="x-chicos">Explícame esto como si tuviera 13 años: con frases cortas, comparaciones con videojuegos, Lego o plastilina, y sin aburrirme.
+
+Mira este proyecto: https://jelentenka.com
+Es el monumento Jelen Tenka, de Santo Domingo de los Tsáchilas (Ecuador), convertido en un mundo 3D que se puede recorrer en el navegador. El código está aquí: https://github.com/Lortbyron/jelen-tenka
+Y aquí lo puedo remixar gratis: https://ai.studio/apps/14c7cd4f-2e08-41b1-9aff-b3a428ec9a19
+
+Cuéntame:
+1. Cómo hace la computadora para dibujar algo en 3D (triángulos, cámara, luces) y por qué aquí no hay fotos: todo está hecho con código, como esculpir con números.
+2. Cómo puede haber sonido de pájaros y lluvia sin grabaciones.
+3. Qué hizo la IA y qué hizo la persona que lo creó.
+4. Qué debería aprender yo, en orden y gratis, para hacer algo así.
+5. Un reto para un fin de semana: mi propia mini escena (por ejemplo, un árbol que se mueve con el viento), con los pasos.
+
+Al final de cada parte, hazme una pregunta para ver si entendí. Y ayúdame a usar la IA para aprender, no para que lo haga todo por mí.</pre>
+        </div>
+
+        <p class="hint">Funciona con cualquier asistente de IA. Si el tuyo no puede abrir enlaces, pégale también el README del repositorio.</p>
+      </div>
+    </section>
+
+    <section id="remix">
+      <div class="wrap studio">
+        <div>
+          <p class="kicker">Remíxalo gratis</p>
+          <h2>Tu propia versión en Google AI Studio</h2>
+          <p class="lead">Hicimos una versión del proyecto en Google AI Studio, que es gratuito. Puedes abrirla, hacer tu copia y pedirle cambios en español, sin instalar nada.</p>
+          <ol class="steps">
+            <li>Abre el enlace e inicia sesión con tu cuenta de Google.</li>
+            <li>Pruébala y haz tu propia copia (remix) para poder cambiarla.</li>
+            <li>Escríbele en el chat lo que quieres cambiar. También puedes preguntarle cómo funciona o qué prompt se usó.</li>
+          </ol>
+          <div class="actions"><a class="btn primary" href="https://ai.studio/apps/14c7cd4f-2e08-41b1-9aff-b3a428ec9a19">Abrir en Google AI Studio
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5"/></svg></a></div>
+        </div>
+        <div class="ideas">
+          <h3>Ideas para empezar</h3>
+          <ul>
+            <li><q>Explícame qué hace cada parte de esta app, sin tecnicismos.</q></li>
+            <li><q>¿Cuál fue el prompt con el que se creó esta app?</q></li>
+            <li><q>Cambia la hora a la noche y enciende las luces del parque.</q></li>
+            <li><q>Agrega lluvia y el sonido de la lluvia.</q></li>
+            <li><q>Cambia el monumento por el lugar más conocido de mi ciudad: …</q></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>Jelen Tenka es una interpretación libre del monumento del Parque Ecológico Jelen Tenka, hecha con código y con respeto por el pueblo tsáchila («tsáchila: verdadera gente»). No tiene relación oficial con el parque ni con el municipio.</p>
+      <p class="mono"><a href="../">Escena 3D</a> · <a href="https://github.com/Lortbyron/jelen-tenka">Código (MIT)</a></p>
+    </div>
+  </footer>
+
+  <dialog id="viewer" aria-label="Imagen ampliada">
+    <button type="button" aria-label="Cerrar">×</button>
+    <img alt="" />
+    <p></p>
+  </dialog>
+
+  <script>
+    // Pestañas de los prompts
+    const tabs = [...document.querySelectorAll('.tab')];
+    function selectTab(tab) {
+      tabs.forEach((t) => {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => selectTab(t));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        const next = tabs[(i + d + tabs.length) % tabs.length];
+        selectTab(next); next.focus();
+      });
+    });
+
+    // Copiar
+    document.querySelectorAll('.copy').forEach((b) => {
+      b.addEventListener('click', async () => {
+        const text = document.getElementById(b.dataset.target).textContent;
+        try { await navigator.clipboard.writeText(text); }
+        catch {
+          const ta = document.createElement('textarea');
+          ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand('copy'); } catch {}
+          ta.remove();
+        }
+        b.textContent = 'Copiado'; b.classList.add('done');
+        setTimeout(() => { b.textContent = 'Copiar prompt'; b.classList.remove('done'); }, 1800);
+      });
+    });
+
+    // Visor de imágenes
+    const viewer = document.getElementById('viewer');
+    const vImg = viewer.querySelector('img');
+    const vCap = viewer.querySelector('p');
+    document.querySelectorAll('.shot').forEach((s) => {
+      s.addEventListener('click', () => {
+        const img = s.querySelector('img');
+        vImg.src = img.src; vImg.alt = img.alt;
+        vCap.textContent = s.dataset.cap || '';
+        viewer.showModal();
+      });
+    });
+    viewer.querySelector('button').addEventListener('click', () => viewer.close());
+    viewer.addEventListener('click', (e) => { if (e.target === viewer) viewer.close(); });
+  </script>
+</body>
+</html>
