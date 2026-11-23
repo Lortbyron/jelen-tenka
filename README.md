@@ -1,5 +1,7 @@
 # Jelen Tenka
 
+**Verlo en vivo:** [jelentenka.com](https://jelentenka.com) · **Cómo se hizo:** [jelentenka.com/guia](https://jelentenka.com/guia/)
+
 El monumento del **Parque Ecológico Jelen Tenka** (Santo Domingo de los Tsáchilas, Ecuador), convertido en una escena 3D que se recorre en el navegador.
 
 Es el rostro de una mujer que mira al cielo, con un manto de mosaico y plantas vivas, un collar de cuentas rojas y dos manos gigantes que salen del césped. Alrededor están el parque, la feria, la gente, la ciudad y la cordillera, con ciclo de día y noche, clima y sonido.
@@ -12,7 +14,7 @@ Necesitas [Node.js](https://nodejs.org) 20 o más reciente.
 
 ```bash
 npm install
-npm run dev        # abre http://localhost:5175
+npm run dev        # servidor de desarrollo en tu computadora
 npm run build      # versión para publicar, en dist/
 npm run preview    # sirve lo que quedó en dist/
 ```
@@ -53,6 +55,7 @@ La carpeta `dist/` es estática. Se puede subir tal cual a GitHub Pages, Netlify
 | `src/flora.js`, `textures.js` | Vegetación con viento y texturas dibujadas en canvas |
 | `src/audio.js` | Motor de sonido con Web Audio |
 | `src/walker.js` | Caminar en primera persona y colisiones |
+| `public/guia/` | La guía: imágenes de referencia y prompts para que tu IA te explique el proyecto |
 | `public/sounds/` | Notas de marimba y sonidos sueltos |
 | `tools/make-sounds.sh` | Regenera las notas de marimba con [earshot](https://github.com/Leonxlnx/earshot) (opcional) |
 
